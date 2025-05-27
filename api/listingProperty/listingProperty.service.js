@@ -39,3 +39,27 @@ exports.deleteProperty = async (req, res, next) => {
     }
 }
 
+exports.getCity = async(req,res,next) =>{
+    const cities = await queries.getCity();
+    return res.status(200).json({ message: "Cities fetched successfully", cities });
+}
+
+exports.getState = async(req,res,next) =>{
+    const states = await queries.getState();
+    return res.status(200).json({ message: "States fetched successfully", states });
+}
+
+exports.getPropertyType = async(req,res,next) =>{
+    const propertyTypes = await queries.getPropertyType();
+    return res.status(200).json({ message: "Property Types fetched successfully", propertyTypes });
+}
+
+exports.getPropertyTag = async(req,res,next) =>{
+    const propertyTags = await queries.getPropertyTag();
+    return res.status(200).json({ message: "Property Tags fetched successfully", propertyTags });
+}   
+
+exports.getAmenity = async(req,res,next) =>{
+    const amenities = await queries.getAmenity();
+    return res.status(200).json({ message: "Amenities fetched successfully", amenities });
+}

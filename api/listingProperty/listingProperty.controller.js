@@ -10,6 +10,16 @@ const authenticate = require("../../middlewares/auth");
 
 router.get("/property",authenticate,service.getProperties);
 
+router.get("/city",authenticate,service.getCity);
+
+router.get("/state",authenticate,service.getState);
+
+router.get("/propertyType",authenticate,service.getPropertyType);
+
+router.get("/propertyTag",authenticate,service.getPropertyTag);
+
+router.get("/amenity",authenticate,service.getAmenity);
+
 router.post("/property",authenticate,validateSchema(schema.postProperty), service.postProperty);
 
 router.delete("/property/:id",authenticate, validateSchema(schema.deleteProperty), service.deleteProperty);
