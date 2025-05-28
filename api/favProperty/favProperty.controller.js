@@ -1,16 +1,19 @@
 const router = require("express").Router();
+
+const authenticate = require("../../middlewares/auth");
 const { validateSchema } = require("../../middlewares/schema-validation");
 
-const service = require("./favProperties.service");
-const schema = require("./favProperties.schema");
+const service = require("./favProperty.service");
+const schema = require("./favProperty.schema");
 
 // const { validateSchema } = require("../../middlewares/schema-validation");
 
 
-router.get("/property",service.getProperties);
+router.get("/property", authenticate, service.getFavProperty);
 
-router.post("/property",validateSchema(schema.postProperty), service.postProperty);
+router.patch("/remove", authenticate, validateSchema(schema.removeFavProperty), service.removeFavProperty);
 
-router.delete("/property/:id", validateSchema(schema.deleteProperty), service.deleteProperty);
+router.patch("/add", authenticate, validateSchema(schema.addFavProperty), service.addFavProperty);
+
 
 module.exports = router;

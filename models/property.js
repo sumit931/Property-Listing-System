@@ -32,7 +32,8 @@ const propertySchema = new mongoose.Schema({
   listingType: {
     type: String,
     enum: ['sale', 'rent']
-  }
+  },
+  listerId : {type : mongoose.Schema.Types.ObjectId}
 });
 
 module.exports = mongoose.model('Property', propertySchema);

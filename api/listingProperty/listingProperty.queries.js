@@ -2,7 +2,7 @@ const User = require("../../models/user");
 const City = require("../../models/city");
 const State = require("../../models/state");
 const PropertyType = require("../../models/propertyType");
-const PropertyTag = require("../../models/propertyTag");
+const Tags = require("../../models/tag");
 const Amenity = require("../../models/amenity");
 const Property = require("../../models/property");
 
@@ -14,8 +14,8 @@ exports.createProperty = (data) => {
     return Property.create(data);
 }
 
-exports.deleteProperty = (id) => {
-    return Property.findOneAndDelete({ id: id });
+exports.deleteProperty = (deleteQuery) => {
+    return Property.findOneAndDelete(deleteQuery);
 }
 
 exports.getCity = () => {
@@ -31,7 +31,7 @@ exports.getPropertyType = () => {
 }
 
 exports.getPropertyTag = () => {
-    return PropertyTag.find();
+    return Tags.find();
 }
 
 exports.getAmenity = () => {

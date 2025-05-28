@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    favPropertyIds: [{ type: mongoose.Schema.Types.ObjectId}],
 }, {
     timestamps: true
 });

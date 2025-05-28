@@ -1,4 +1,5 @@
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 exports.postRegister = {
     body: Joi.object({
@@ -22,18 +23,24 @@ exports.postLogin = {
 exports.postProperty = {
     body: Joi.object({
         title: Joi.string().required(),
-        type: Joi.string().required(),
+        // type: Joi.string().required(),
+        typeId: Joi.objectId().required(),
         price: Joi.number().required(),
-        state: Joi.string().required(),
-        city: Joi.string().required(),
+        // state: Joi.string().required(),
+        stateId: Joi.objectId().required(),
+        cityId: Joi.objectId().required(),
+        // city: Joi.string().required(),
         areaSqFt: Joi.number().required(),
         bedrooms: Joi.number().required(),
         bathrooms: Joi.number().required(),
-        amenities: Joi.array().items(Joi.string()),
+        // amenities: Joi.array().items(Joi.string()),
+        amenityIds: Joi.array().items(Joi.objectId()),
+        tagIds: Joi.array().items(Joi.objectId()),
         furnished: Joi.string().valid('Furnished', 'Unfurnished', 'Semi').required(),
         availableFrom: Joi.date().required(),
         listedBy: Joi.string().valid('Builder', 'Owner', 'Agent').required(),
-        tags: Joi.array().items(Joi.string()),
+        // tags: Joi.array().items(Joi.string()),
+        tagIds: Joi.array().items(Joi.objectId()),
         colorTheme: Joi.string(),
         rating: Joi.number(),
         isVerified: Joi.boolean(),

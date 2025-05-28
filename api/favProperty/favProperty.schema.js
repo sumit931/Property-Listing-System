@@ -1,48 +1,15 @@
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
-exports.postRegister = {
+exports.addFavProperty = {
     body: Joi.object({
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
-        email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).required()
-            .messages({ 'any.only': 'Password and confirm password must match' }),
-        phoneNumber: Joi.string().required(),
+        propertyId: Joi.objectId().required()
     })
 };
 
-exports.postLogin = {
+exports.removeFavProperty = {
     body: Joi.object({
-        email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        propertyId: Joi.objectId().required()
     })
 };
 
-exports.postProperty = {
-    body: Joi.object({
-        title: Joi.string().required(),
-        type: Joi.string().required(),
-        price: Joi.number().required(),
-        state: Joi.string().required(),
-        city: Joi.string().required(),
-        areaSqFt: Joi.number().required(),
-        bedrooms: Joi.number().required(),
-        bathrooms: Joi.number().required(),
-        amenities: Joi.array().items(Joi.string()),
-        furnished: Joi.string().valid('Furnished', 'Unfurnished', 'Semi').required(),
-        availableFrom: Joi.date().required(),
-        listedBy: Joi.string().valid('Builder', 'Owner', 'Agent').required(),
-        tags: Joi.array().items(Joi.string()),
-        colorTheme: Joi.string(),
-        rating: Joi.number(),
-        isVerified: Joi.boolean(),
-        listingType: Joi.string().valid('sale', 'rent').required()
-    })
-};
-
-exports.deleteProperty = {
-    params: Joi.object({
-        id: Joi.string().required()
-    })
-};  

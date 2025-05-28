@@ -11,6 +11,7 @@ exports.register = async (req, res, next) => {
         phoneNumber: req.body.phoneNumber,
         role: "user"
     };
+
     if (req.body.password !== req.body.confirmPassword) {
         console.log('Password mismatch');
         return res.status(400).json({ message: "Password and confirm password do not match" });

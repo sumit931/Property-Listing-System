@@ -1,41 +1,23 @@
-const queries = require("./listingProperty.queries");
+const queries = require("./favProperty.queries");
 
 
-exports.getProperties = async (req, res, next) => {
-    const properties = await queries.getProperties();
-    return res.status(200).json({ message: "Properties fetched successfully", properties });
+
+exports.getFavProperty = async (req, res, next) => {
+    const favProperty = await queries.getFavProperty(req.user.id);
+    return res.status(200).json({ message: "Fav Property fetched successfully", favProperty });
 }
 
-exports.postProperty = async (req, res, next) => {
-    try {
-        const propertyData = {
-            ...req.body,
-            id: Date.now().toString(), // Generate a unique ID
-            isVerified: false // Default value for new listings
-        };
-        
-        const result = await queries.createProperty(propertyData);
-        console.log('Property created successfully:', result);
-        return res.status(201).json({ message: "Property listed successfully", property: result });
-    } catch (error) {
-        console.error('Error creating property:', error);
-        next(error);
-    }
+exports.addFavProperty = async (req, res, next) => {
+    const favProperty = await queries.addFavProperty(req.user.id, req.body.propertyId);
+    return res.status(200).json({ message: "Fav Property added successfully", favProperty });
 }
 
-exports.deleteProperty = async (req, res, next) => {
-    try {
-        const propertyId = req.params.id;
-        const deletedProperty = await queries.deleteProperty(propertyId);
-        
-        if (!deletedProperty) {
-            return res.status(404).json({ message: "Property not found" });
-        }
-        
-        return res.status(200).json({ message: "Property deleted successfully", property: deletedProperty });
-    } catch (error) {
-        console.error('Error deleting property:', error);
-        next(error);
-    }
+
+exports.removeFavProperty = async (req, res, next) => {
+    const favProperty = await queries.removeFavProperty(req.user.id, req.body.propertyId);
+    return res.status(200).json({ message: "Fav Property removed successfully", favProperty });
 }
+
+
+
 

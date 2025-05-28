@@ -11,7 +11,9 @@ exports.postProperty = async (req, res, next) => {
         const propertyData = {
             ...req.body,
             id: Date.now().toString(), // Generate a unique ID
+            listerId: req.user.id,
             isVerified: false // Default value for new listings
+
         };
         
         const result = await queries.createProperty(propertyData);
@@ -26,10 +28,16 @@ exports.postProperty = async (req, res, next) => {
 exports.deleteProperty = async (req, res, next) => {
     try {
         const propertyId = req.params.id;
-        const deletedProperty = await queries.deleteProperty(propertyId);
+        const deleteQuery = {
+            id: propertyId,
+            listerId: req.user.id
+        };
+
+        console.log(deleteQuery, " this is the delete query");
+        const deletedProperty = await queries.deleteProperty(deleteQuery);
         
         if (!deletedProperty) {
-            return res.status(404).json({ message: "Property not found" });
+            return res.status(404).json({ message: "Property not found or you don't have permission to delete it" });
         }
         
         return res.status(200).json({ message: "Property deleted successfully", property: deletedProperty });
@@ -55,6 +63,7 @@ exports.getPropertyType = async(req,res,next) =>{
 }
 
 exports.getPropertyTag = async(req,res,next) =>{
+    console.log("testing 2.0");
     const propertyTags = await queries.getPropertyTag();
     return res.status(200).json({ message: "Property Tags fetched successfully", propertyTags });
 }   

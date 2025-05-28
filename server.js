@@ -17,6 +17,8 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./api/auth/auth.controller'));
 app.use('/listingProperty', require('./api/listingProperty/listingProperty.controller'));
 
+app.use('/favProperty', require('./api/favProperty/favProperty.controller'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
