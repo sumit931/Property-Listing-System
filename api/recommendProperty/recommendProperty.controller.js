@@ -5,3 +5,10 @@ const service = require("./recommendProperty.service");
 const schema = require("./recommendProperty.schema");
 const authenticate = require("../../middlewares/auth");
 
+
+router.get("/", authenticate, service.getRecommendProperty);
+
+router.post("/", authenticate, validateSchema(schema.addRecommendation), service.postRecommendProperty);
+
+
+module.exports = router;
