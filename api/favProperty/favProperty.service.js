@@ -1,9 +1,13 @@
 const queries = require("./favProperty.queries");
+const { ObjectId } = require("mongodb");
 
 
 
 exports.getFavProperty = async (req, res, next) => {
-    const favProperty = await queries.getFavProperty(req.user.id);
+    const findQuery = {
+        _id: new ObjectId(req.user.id)
+    }
+    const favProperty = await queries.getFavProperty(findQuery);
     return res.status(200).json({ message: "Fav Property fetched successfully", favProperty });
 }
 

@@ -1,88 +1,86 @@
 const User = require("../../models/user");
 const Property = require("../../models/property");
 
-exports.getFavProperty = (userId) => {
+exports.getFavProperty = (findQuery) => {
+    console.log(findQuery);
     return User.aggregate([
-        // Match the specific user
-        { $match: { _id: userId } },
-        // Lookup to get favorite properties
+        { $match: findQuery },
+        {
+            $project: {
+                favPropertyIds: 1
+            }
+        },
+        { $unwind: "$favPropertyIds" },
         {
             $lookup: {
                 from: 'properties',
                 localField: 'favPropertyIds',
                 foreignField: '_id',
-                as: 'favoriteProperties'
+                as: 'property'
             }
         },
-        // Unwind the favorite properties array
-        { $unwind: '$favoriteProperties' },
-        // Lookup for property type details
+        { $unwind: '$property' },
         {
             $lookup: {
                 from: 'propertytypes',
-                localField: 'favoriteProperties.typeId',
+                localField: 'property.typeId',
                 foreignField: '_id',
                 as: 'propertyType'
             }
         },
-        // Lookup for city details
         {
             $lookup: {
                 from: 'cities',
-                localField: 'favoriteProperties.cityId',
+                localField: 'property.cityId',
                 foreignField: '_id',
                 as: 'city'
             }
         },
-        // Lookup for state details
         {
             $lookup: {
                 from: 'states',
-                localField: 'favoriteProperties.stateId',
+                localField: 'property.stateId',
                 foreignField: '_id',
                 as: 'state'
             }
         },
-        // Lookup for amenities
         {
             $lookup: {
                 from: 'amenities',
-                localField: 'favoriteProperties.amenityIds',
+                localField: 'property.amenityIds',
                 foreignField: '_id',
                 as: 'amenities'
             }
         },
-        // Lookup for tags
         {
             $lookup: {
                 from: 'tags',
-                localField: 'favoriteProperties.tagIds',
+                localField: 'property.tagIds',
                 foreignField: '_id',
                 as: 'tags'
             }
         },
-        // Project the final structure
         {
             $project: {
-                _id: '$favoriteProperties._id',
-                id: '$favoriteProperties.id',
-                title: '$favoriteProperties.title',
+                _id: '$property._id',
+                id: '$property.id',
+                title: '$property.title',
                 type: { $arrayElemAt: ['$propertyType.type', 0] },
-                price: '$favoriteProperties.price',
+                price: '$property.price',
                 state: { $arrayElemAt: ['$state.state', 0] },
                 city: { $arrayElemAt: ['$city.city', 0] },
-                areaSqFt: '$favoriteProperties.areaSqFt',
-                bedrooms: '$favoriteProperties.bedrooms',
-                bathrooms: '$favoriteProperties.bathrooms',
+                areaSqFt: '$property.areaSqFt',
+                bedrooms: '$property.bedrooms',
+                bathrooms: '$property.bathrooms',
                 amenities: '$amenities.name',
-                furnished: '$favoriteProperties.furnished',
-                availableFrom: '$favoriteProperties.availableFrom',
-                listedBy: '$favoriteProperties.listedBy',
+                furnished: '$property.furnished',
+                availableFrom: '$property.availableFrom',
+                listedBy: '$property.listedBy',
                 tags: '$tags.name',
-                colorTheme: '$favoriteProperties.colorTheme',
-                rating: '$favoriteProperties.rating',
-                isVerified: '$favoriteProperties.isVerified',
-                listingType: '$favoriteProperties.listingType'
+                colorTheme: '$property.colorTheme',
+                rating: '$property.rating',
+                isVerified: '$property.isVerified',
+                listingType: '$property.listingType'
             }
         }
     ]);
