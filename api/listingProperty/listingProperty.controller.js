@@ -8,7 +8,7 @@ const authenticate = require("../../middlewares/auth");
 // const { validateSchema } = require("../../middlewares/schema-validation");
 
 
-router.get("/property",authenticate,service.getProperties);
+router.get("/property", authenticate, validateSchema(schema.getProperties), service.getProperties);
 
 router.get("/city",authenticate,service.getCity);
 

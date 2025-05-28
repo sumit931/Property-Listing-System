@@ -52,4 +52,23 @@ exports.deleteProperty = {
     params: Joi.object({
         id: Joi.string().required()
     })
+};
+
+exports.getProperties = {
+    query: Joi.object({
+        title: Joi.string(),
+        typeId: Joi.objectId(),
+        minPrice: Joi.number().min(0),
+        maxPrice: Joi.number().min(0),
+        availableFrom: Joi.date(),
+        stateId: Joi.objectId(),
+        cityId: Joi.objectId(),
+        minBedrooms: Joi.number().min(0),
+        minBathrooms: Joi.number().min(0),
+        amenityIds: Joi.array().items(Joi.objectId()),
+        furnished: Joi.string().valid('Furnished', 'Unfurnished', 'Semi'),
+        tagIds: Joi.array().items(Joi.objectId()),
+        minRating: Joi.number().min(0).max(5),
+        listingType: Joi.string().valid('sale', 'rent')
+    })
 };  

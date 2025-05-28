@@ -1,9 +1,44 @@
 const queries = require("./listingProperty.queries");
-
+const { ObjectId } = require("mongodb");
 
 exports.getProperties = async (req, res, next) => {
-    const properties = await queries.getProperties();
-    return res.status(200).json({ message: "Properties fetched successfully", properties });
+    try {
+        const findQuery = {};
+        
+        // Convert string IDs to ObjectId
+        if (req.query?.typeId) findQuery.typeId = new ObjectId(req.query.typeId);
+        if (req.query?.stateId) findQuery.stateId = new ObjectId(req.query.stateId);
+        if (req.query?.cityId) findQuery.cityId = new ObjectId(req.query.cityId);
+        
+        // Title search with case-insensitive regex
+        if(req.query?.title) findQuery.title = { $regex: req.query.title, $options: 'i' };
+        
+        // Date filter
+        if(req.query?.availableFrom) findQuery.availableFrom = { $lte: new Date(req.query.availableFrom) };
+        
+        // Price range
+        if(req.query?.minPrice || req.query?.maxPrice) {
+            findQuery.price = {};
+            if(req.query?.minPrice) findQuery.price.$gte = Number(req.query.minPrice);
+            if(req.query?.maxPrice) findQuery.price.$lte = Number(req.query.maxPrice);
+        }
+        
+        // Numeric filters
+        if(req.query?.minBedrooms) findQuery.bedrooms = { $gte: Number(req.query.minBedrooms) };
+        if(req.query?.minBathrooms) findQuery.bathrooms = { $gte: Number(req.query.minBathrooms) };
+        if(req.query?.minRating) findQuery.rating = { $gte: Number(req.query.minRating) };
+        
+        // String filters
+        if(req.query?.listingType) findQuery.listingType = req.query.listingType;
+        if(req.query?.furnished) findQuery.furnished = req.query.furnished;
+
+        console.log('Find Query:', JSON.stringify(findQuery, null, 2));
+        const result = await queries.getProperties(findQuery);
+        return res.status(200).json({ message: "Properties fetched successfully", properties: result });
+    } catch (error) {
+        console.error('Error fetching properties:', error);
+        next(error);
+    }
 }
 
 exports.postProperty = async (req, res, next) => {
