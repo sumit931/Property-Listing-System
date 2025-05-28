@@ -7,8 +7,7 @@ exports.postRegister = {
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required()
-            .messages({ 'any.only': 'Password and confirm password must match' }),
-        phoneNumber: Joi.string().required(),
+            .messages({ 'any.only': 'Password and confirm password must match' })
     })
 };
 
