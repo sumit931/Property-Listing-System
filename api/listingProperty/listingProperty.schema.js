@@ -1,6 +1,7 @@
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+// Helper function to ensure a value is an array before Joi validation
 exports.postRegister = {
     body: Joi.object({
         firstName: Joi.string().required(),
@@ -65,9 +66,15 @@ exports.getProperties = {
         cityId: Joi.objectId(),
         minBedrooms: Joi.number().min(0),
         minBathrooms: Joi.number().min(0),
-        amenityIds: Joi.array().items(Joi.objectId()),
+        amenityIds: Joi.alternatives().try(
+            Joi.objectId(),                        // Accept a single ObjectId
+            Joi.array().items(Joi.objectId())      // Or an array of ObjectIds
+          ).optional(),
         furnished: Joi.string().valid('Furnished', 'Unfurnished', 'Semi'),
-        tagIds: Joi.array().items(Joi.objectId()),
+        tagIds: Joi.alternatives().try(
+            Joi.objectId(),                        // Accept a single ObjectId
+            Joi.array().items(Joi.objectId())      // Or an array of ObjectIds
+          ).optional(),
         minRating: Joi.number().min(0).max(5),
         listingType: Joi.string().valid('sale', 'rent')
     })

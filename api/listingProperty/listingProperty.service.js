@@ -32,7 +32,25 @@ exports.getProperties = async (req, res, next) => {
         if(req.query?.listingType) findQuery.listingType = req.query.listingType;
         if(req.query?.furnished) findQuery.furnished = req.query.furnished;
 
-        console.log('Find Query:', JSON.stringify(findQuery, null, 2));
+
+        let processedAmenityIds = req.query?.amenityIds;
+        if (processedAmenityIds && typeof processedAmenityIds === 'string') {
+            processedAmenityIds = [processedAmenityIds];
+        }
+
+        let processedTagIds = req.query?.tagIds;
+        if (processedTagIds && typeof processedTagIds === 'string') {
+            processedTagIds = [processedTagIds];
+        }
+
+        if(processedAmenityIds) {
+            findQuery.amenityIds = { $all: processedAmenityIds.map(id => new ObjectId(id)) };
+        }
+        if(processedTagIds) {
+            findQuery.tagIds = { $all: processedTagIds.map(id => new ObjectId(id)) };
+        }
+        
+
         const result = await queries.getProperties(findQuery);
         return res.status(200).json({ message: "Properties fetched successfully", properties: result });
     } catch (error) {
