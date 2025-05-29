@@ -136,6 +136,12 @@ exports.deleteProperty = (deleteQuery) => {
     return Property.findOneAndDelete(deleteQuery);
 }
 
+exports.updateProperty = (query, updateData) => {
+    // Options to return the updated document and run validators
+    const options = { new: true, runValidators: true }; 
+    return Property.findOneAndUpdate(query, updateData, options);
+};
+
 exports.getCity = () => {
     return City.find();
 }

@@ -22,6 +22,8 @@ router.get("/amenity",authenticate,service.getAmenity);
 
 router.post("/property",authenticate,validateSchema(schema.postProperty), service.postProperty);
 
+router.patch("/property/:id", authenticate, validateSchema(schema.patchProperty), service.updateProperty);
+
 router.delete("/property/:id",authenticate, validateSchema(schema.deleteProperty), service.deleteProperty);
 
 module.exports = router;

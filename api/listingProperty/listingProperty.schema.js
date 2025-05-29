@@ -78,4 +78,31 @@ exports.getProperties = {
         minRating: Joi.number().min(0).max(5),
         listingType: Joi.string().valid('sale', 'rent')
     })
+};
+
+exports.patchProperty = {
+    params: Joi.object({
+        id: Joi.string().required() // Assuming 'id' is the string ID like in postProperty
+    }),
+    body: Joi.object({
+        title: Joi.string().optional(),
+        typeId: Joi.objectId().optional(),
+        price: Joi.number().optional(),
+        stateId: Joi.objectId().optional(),
+        cityId: Joi.objectId().optional(),
+        areaSqFt: Joi.number().optional(),
+        bedrooms: Joi.number().optional(),
+        bathrooms: Joi.number().optional(),
+        amenityIds: Joi.array().items(Joi.objectId()).optional(),
+        tagIds: Joi.array().items(Joi.objectId()).optional(),
+        furnished: Joi.string().valid('Furnished', 'Unfurnished', 'Semi').optional(),
+        availableFrom: Joi.date().optional(),
+        listedBy: Joi.string().valid('Builder', 'Owner', 'Agent').optional(),
+        colorTheme: Joi.string().optional(),
+        rating: Joi.number().optional(),
+        // isVerified should likely not be patchable by a regular user, 
+        // but can be included if there's an admin flow for it. For now, I'll omit it.
+        // isVerified: Joi.boolean().optional(), 
+        listingType: Joi.string().valid('sale', 'rent').optional()
+    }).min(1) // Require at least one field to be updated
 };  

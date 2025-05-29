@@ -100,6 +100,32 @@ exports.deleteProperty = async (req, res, next) => {
     }
 }
 
+exports.updateProperty = async (req, res, next) => {
+    try {
+        const propertyId = req.params.id;
+        const updateData = req.body;
+
+        // Ensure listerId matches the authenticated user to prevent unauthorized updates
+        const updateQuery = {
+            _id: new ObjectId(propertyId),
+            listerId: new ObjectId(req.user.id) 
+        };
+        console.log(updateQuery, " this is the update query");
+
+        // MongoDB $set operator to update only provided fields
+        const updatedProperty = await queries.updateProperty(updateQuery, { $set: updateData });
+
+        if (!updatedProperty) {
+            return res.status(404).json({ message: "Property not found or you don't have permission to update it" });
+        }
+
+        return res.status(200).json({ message: "Property updated successfully", property: updatedProperty });
+    } catch (error) {
+        console.error('Error updating property:', error);
+        next(error);
+    }
+};
+
 exports.getCity = async(req,res,next) =>{
     const cities = await queries.getCity();
     return res.status(200).json({ message: "Cities fetched successfully", cities });
