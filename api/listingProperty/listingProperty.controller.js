@@ -7,6 +7,7 @@ const authenticate = require("../../middlewares/auth");
 
 // const { validateSchema } = require("../../middlewares/schema-validation");
 
+router.get("/my-properties",authenticate,service.getMyProperties);
 
 router.get("/property", authenticate, validateSchema(schema.getProperties), service.getProperties);
 

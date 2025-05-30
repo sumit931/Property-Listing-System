@@ -10,5 +10,7 @@ router.get("/", authenticate, service.getRecommendProperty);
 
 router.post("/", authenticate, validateSchema(schema.addRecommendation), service.postRecommendProperty);
 
+// router.delete("/",authenticate,service.deleteRecommendProperty);
+
 
 module.exports = router;

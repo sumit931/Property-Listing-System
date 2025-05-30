@@ -161,3 +161,7 @@ exports.getPropertyTag = () => {
 exports.getAmenity = () => {
     return Amenity.find();  
 }
+
+exports.getMyProperties = (findQuery) => {
+    return Property.find(findQuery);
+}

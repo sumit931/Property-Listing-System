@@ -51,7 +51,7 @@ exports.postProperty = {
 
 exports.deleteProperty = {
     params: Joi.object({
-        id: Joi.string().required()
+        id: Joi.objectId().required()
     })
 };
 
@@ -82,7 +82,7 @@ exports.getProperties = {
 
 exports.patchProperty = {
     params: Joi.object({
-        id: Joi.string().required() // Assuming 'id' is the string ID like in postProperty
+        id: Joi.objectId().required()
     }),
     body: Joi.object({
         title: Joi.string().optional(),
