@@ -6,5 +6,6 @@ module.exports = {
     jwtSecret: process.env.JWT_SECRET,
     jwtExpiry : process.env.JWT_EXPIRES_IN,
     CACHE_TTL : parseInt(process.env.CACHE_TTL, 10),
-    PROPERTY_CACHE_TTL : parseInt(process.env.PROPERTY_CACHE_TTL, 10)
+    PROPERTY_CACHE_TTL : parseInt(process.env.PROPERTY_CACHE_TTL, 10),
+    REDIS_URI : process.env.REDIS_URI
 }; 
