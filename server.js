@@ -1,8 +1,17 @@
 const express = require('express');
 const connectDB = require('./db');
 const config = require('./config');
+const cors = require('cors');
 
 const app = express();
+
+// CORS middleware configuration
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://property-listing-system.vercel.app'], // Add your frontend URLs
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
 // Middleware
 app.use(express.json());
@@ -16,9 +25,9 @@ app.get('/', (req, res) => {
 // Register routes
 app.use('/auth', require('./api/auth/auth.controller'));
 app.use('/listingProperty', require('./api/listingProperty/listingProperty.controller'));
-
 app.use('/favProperty', require('./api/favProperty/favProperty.controller'));
 app.use('/recommendProperty', require('./api/recommendProperty/recommendProperty.controller'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
