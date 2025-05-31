@@ -5,9 +5,9 @@ const cors = require('cors');
 
 const app = express();
 
-// CORS middleware configuration
+// CORS middleware configuration - Allow all origins
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://property-listing-system.vercel.app'], // Add your frontend URLs
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
